@@ -9,18 +9,19 @@ class Merger
     def startMerge(right, left, tracker)
         return if !@temp_arr[@temp_arr.length - 1].nil?
 
-        if right > (@left_array.length - 1)
+        if @right_array[right].nil?
             #copy all item from left array to the temp array
             copyRemaining(left, @left_array, tracker)
             return
         end
 
-        if left > (@right_array.length - 1)
+        if @left_array[left].nil?
             #copy all item from right array to the temp array
             copyRemaining(right, @right_array, tracker)
+            startMerge(right, left, tracker)
             return
         end
-        p @left_array[left] < @right_array[right]
+        
         if @left_array[left] < @right_array[right]
             @temp_arr[tracker] = @left_array[left]
             tracker = tracker + 1
@@ -37,12 +38,11 @@ class Merger
     end
 
     def copyRemaining(start_pos, array, tracker)
-        p "started copying"
+       
         i = 0
-        len = start_pos - array.length
-
+        len = array.length - start_pos
         while i < len
-            @temp[tracker] = array[start_pos]
+            @temp_arr[tracker] = array[start_pos]
             tracker = tracker + 1
             start_pos = start_pos + 1
             i = i + 1
@@ -52,10 +52,7 @@ class Merger
 
     def makeMerge
         @temp_arr = Array.new(@left_array.length + @right_array.length)
-        right = 0
-        left = 0
-
-        startMerge(right, left, 0)
+        startMerge(0, 0, 0)
 
 
 
@@ -69,9 +66,9 @@ class Merger
 end
 
 ele = Merger.new([
-    5, 20, 30, 45, 100
+    5, 20, 30, 45, 100, 200
 ], [
-    10, 25, 28, 40, 42
+    10, 25, 28, 40, 788, 789
 ])
 ele.makeMerge
 
